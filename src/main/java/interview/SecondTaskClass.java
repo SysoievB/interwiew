@@ -3,10 +3,6 @@ package interview;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.util.function.UnaryOperator.identity;
-import static java.util.stream.Collectors.counting;
 
 /**
  * Write algorytm that will count how many occurences of different
@@ -25,8 +21,27 @@ import static java.util.stream.Collectors.counting;
 public class SecondTaskClass {
 
     public static void main(String[] args) {
-        SecondTaskClass.methodWithoutStream("A sailor went to sea, sea, sea\n" +
-                " To see what he could see, see, see");
+        /*SecondTaskClass.method("A sailor went to sea, sea, sea\n" +
+                " To see what he could see, see, see");*/
+
+String s = "A sailor went to sea, sea, sea\n" +
+        " To see what he could see, see, see";
+        String[] arr = s.toLowerCase().split("\\W+");
+
+        List<Integer> words = Arrays.stream(arr).distinct().map(String::length).collect(Collectors.toCollection(ArrayList::new));
+        List<Integer> intSequence = IntStream.rangeClosed(1, words.size()).boxed().collect(Collectors.toCollection(ArrayList::new));
+
+        Map<Integer, Integer> map = IntStream.range(0, intSequence.size())
+                .distinct()
+                .collect(
+                        TreeMap::new,
+                        (m, i) -> m.put(intSequence.get(i), words.get(i)),
+                        Map::putAll);
+
+        System.out.println(words.size());
+        System.out.println(intSequence.size());
+
+        map.forEach((k, v) -> System.out.println(k + " Letter(s): " + v));
     }
 
     public static void methodWithoutStream(String s) {
@@ -49,20 +64,15 @@ public class SecondTaskClass {
     public static void method(String s) {
         String[] arr = s.toLowerCase().split("\\W+");
 
-        List<Integer> integerList = new ArrayList<>();
-        for (int i = 1; i <= arr.length; i++) {
-            integerList.add(i);
-        }
+        List<Integer> words = Arrays.stream(arr).distinct().map(String::length).collect(Collectors.toCollection(ArrayList::new));
+        List<Integer> intSequence = IntStream.rangeClosed(1, arr.length).boxed().collect(Collectors.toCollection(ArrayList::new));
 
-        int j=0;
-
-        Map<Integer, Integer> map = Arrays.stream(arr)
+        Map<Integer, Integer> map = IntStream.rangeClosed(0, intSequence.size())
                 .distinct()
-                //.map(String::length)
-               // .flatMap(index->integerList.stream())
                 .collect(
-                        Collectors.groupingBy(),
-                        Collectors.groupingBy(String::length));
+                        TreeMap::new,
+                        (m, i) -> m.put(intSequence.get(i), words.get(i)),
+                        Map::putAll);
 
         map.forEach((k, v) -> System.out.println(k + " Letter(s): " + v));
     }
