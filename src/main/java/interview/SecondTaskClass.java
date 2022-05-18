@@ -21,27 +21,8 @@ import java.util.stream.IntStream;
 public class SecondTaskClass {
 
     public static void main(String[] args) {
-        /*SecondTaskClass.method("A sailor went to sea, sea, sea\n" +
-                " To see what he could see, see, see");*/
-
-String s = "A sailor went to sea, sea, sea\n" +
-        " To see what he could see, see, see";
-        String[] arr = s.toLowerCase().split("\\W+");
-
-        List<Integer> words = Arrays.stream(arr).distinct().map(String::length).collect(Collectors.toCollection(ArrayList::new));
-        List<Integer> intSequence = IntStream.rangeClosed(1, words.size()).boxed().collect(Collectors.toCollection(ArrayList::new));
-
-        Map<Integer, Integer> map = IntStream.range(0, intSequence.size())
-                .distinct()
-                .collect(
-                        TreeMap::new,
-                        (m, i) -> m.put(intSequence.get(i), words.get(i)),
-                        Map::putAll);
-
-        System.out.println(words.size());
-        System.out.println(intSequence.size());
-
-        map.forEach((k, v) -> System.out.println(k + " Letter(s): " + v));
+        SecondTaskClass.method("A sailor went to sea, sea, sea\n" +
+                " To see what he could see, see, see");
     }
 
     public static void methodWithoutStream(String s) {
@@ -64,10 +45,21 @@ String s = "A sailor went to sea, sea, sea\n" +
     public static void method(String s) {
         String[] arr = s.toLowerCase().split("\\W+");
 
-        List<Integer> words = Arrays.stream(arr).distinct().map(String::length).collect(Collectors.toCollection(ArrayList::new));
-        List<Integer> intSequence = IntStream.rangeClosed(1, arr.length).boxed().collect(Collectors.toCollection(ArrayList::new));
+        List<Integer> words = Arrays.stream(arr)
+                .distinct()
+                .map(String::length)
+                .collect(
+                        Collectors.toCollection(ArrayList::new)
+                );
 
-        Map<Integer, Integer> map = IntStream.rangeClosed(0, intSequence.size())
+        List<Integer> intSequence = IntStream
+                .rangeClosed(1, words.size())
+                .boxed()
+                .collect(
+                        Collectors.toCollection(ArrayList::new)
+                );
+
+        Map<Integer, Integer> map = IntStream.range(0, intSequence.size())
                 .distinct()
                 .collect(
                         TreeMap::new,
